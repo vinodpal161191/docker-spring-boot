@@ -38,11 +38,6 @@ pipeline {
             }
         }
         
-        stage ("Helm package") {
-            steps {
-                    sh "helm package springboot"
-                }
-            }
                 
         stage ("Helm install") {
             steps {
