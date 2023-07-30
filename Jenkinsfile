@@ -4,7 +4,7 @@ pipeline {
     agent any
 
     environment {
-        registry = "554723871506.dkr.ecr.ap-south-1.amazonaws.com/springbootjenkins"
+        registry = "554723871506.dkr.ecr.ap-south-1.amazonaws.com/javaspringboot"
     }
     stages {
         stage('Checkout') {
@@ -31,8 +31,8 @@ pipeline {
         stage ("Push to ECR") {
             steps {
                 script {
-                    sh "aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 554723871506.dkr.ecr.ap-south-1.amazonaws.com/springbootjenkins"
-                    sh "docker push 554723871506.dkr.ecr.ap-south-1.amazonaws.com/springbootjenkins:$BUILD_NUMBER"
+                    sh "aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 554723871506.dkr.ecr.ap-south-1.amazonaws.com/javaspringboot"
+                    sh "docker push 554723871506.dkr.ecr.ap-south-1.amazonaws.com/javaspringboot:$BUILD_NUMBER"
                     
                 }
             }
