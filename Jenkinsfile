@@ -22,7 +22,8 @@ pipeline {
         stage ("Build Image") {
             steps {
                 script {
-                    docker.build registry
+                    dockerImage = docker.build registry 
+                    dockerImage.tag("$BUILD_NUMBER")
                 }
             }
         }
@@ -30,8 +31,8 @@ pipeline {
         stage ("Push to ECR") {
             steps {
                 script {
-                    sh "aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 554723871506.dkr.ecr.ap-south-1.amazonaws.com"
-                    sh "docker push 554723871506.dkr.ecr.ap-south-1.amazonaws.com:latest"
+                    sh "aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 554723871506.dkr.ecr.ap-south-1.amazonaws.com/springbootjenkins"
+                    sh "docker push 554723871506.dkr.ecr.ap-south-1.amazonaws.com/springbootjenkins:$BUILD_NUMBER"
                     
                 }
             }
@@ -45,7 +46,7 @@ pipeline {
                 
         stage ("Helm install") {
             steps {
-                    sh "helm upgrade myrelease-v1 springboot-0.1.0.tgz"
+                    sh "helm upgrade first --install mychart --namespace helm-deployment --set image.tag=$BUILD_NUMBER"
                 }
             }
     }
